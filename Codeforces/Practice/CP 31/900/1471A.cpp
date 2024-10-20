@@ -6,11 +6,11 @@ int main() {
     lli t;
     cin >> t;
     while(t--) {
-        int n,x;
+        lli n,x;
         cin >> n >> x;
-        int mx = 0, mn = 0;
+        lli mx = 0, mn = 0;
         vector<lli> a(n);
-        for(int i = 0;i < n;i++){
+        for(lli i = 0;i < n;i++){
             cin >> a[i];
             mx += (a[i] % x == 0) ? a[i]/x : a[i]/x + 1;
             mn += a[i];
