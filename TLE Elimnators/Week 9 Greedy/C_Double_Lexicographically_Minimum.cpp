@@ -277,63 +277,29 @@ int main() {
         string s; cin >> s;
         sort(s.begin(),s.end());
         string ans = s;
-        if(s.size() < 3) {
-            cout << s << endl;
-            continue;
-        }
-        lli l = 0, r = 2,n = s.size(),idx=-1,cnt = 0;
-        while(r < n){
-            if(s[l] == s[l+1]){
-                ans[cnt] = s[l];
-                ans[n-cnt-1] = s[l];
-                idx = l;
-                l += 2;
-                r += 2;
-            }else if(s[l+1] == s[l+2] and l == n-3){
-                ans[cnt] = s[l+1];
-                ans[n-cnt-1] = s[l+1];
-                idx = l;
-                l += 2;
-                s[l] = s[l-2];
-                r += 2;
-            }else if(s[l+1] == s[l+2] and l != n-3){
-                ans[cnt] = s[l+1];
-                ans[n-cnt-1] = s[l];
-                cnt++;
-                l += 2;
-                break;
-            }
+        lli n = s.length(), l = 0, r = n-1;
+
+        for(lli i = 0;i <n;i+= 2){
+            if(i == n-1) ans[l] = s[i];
             else{
-                ans[cnt] = s[l];
-                ans[n-cnt-1] = s[l+1];
-                idx = l;
-                l+= 2;
-                cnt++;
-                break;
+                if(s[i] == s[i+1]){
+                    ans[l++] = s[i];
+                    ans[r--] = s[i+1];
+                }else if(s[i+1] == s[n-1]){
+                    lli len = n  - i - 1;
+                    lli cnt = (len+1)/2;
+                    for(lli j = 0;j < cnt;j++) ans[l++] = s[i+1];
+                    ans[l++] = s[i];
+                    cnt = len/2;
+                    for(lli j = 0;j < cnt;j++) ans[l++] = s[i+1];
+                    break;
+                }else{
+                    ans[r] = s[i++];
+                    while(l < r){
+                        ans[l++] = s[i++];
+                    }
+                }
             }
-            cnt++;
-        }
-        if(ans[cnt] < ans[n-cnt-1]){
-            for(lli i = l;i < n;i++){
-                ans[cnt++] = s[i];
-            }
-        }else{
-            for(lli i = l;i < n;i++){
-                ans[n-cnt-1] = s[i];
-                cnt++;
-            }
-        }
-        lli i = n-1;
-        bool flag = true;
-        while(i > 0 and flag){
-            string x = ans;
-            swap(x[i],x[i-1]);
-            string nx =x;
-            reverse(nx.begin(),nx.end());
-            if(max(x,nx) < ans){
-                ans = x;
-                i--;
-            }else flag = false;
         }
         cout << ans << endl;
     }
