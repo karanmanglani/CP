@@ -271,10 +271,45 @@ struct Hashing{
 int main() {
     cin.tie(0) -> sync_with_stdio(0);
     // your code goes here
-    lli t; cin >> t;
-    // lli t = 1;
+    // lli t; cin >> t;
+    lli t = 1;
     while(t--) {
-        
+        lli n;cin >> n;
+        multiset<pair<lli,lli>> st;
+        multiset<pair<lli,pair<lli,lli>>> a;
+        vector<lli> ans(n,0);
+        for(lli i = 0;i < n;i++){
+            lli l,r;cin >> l >> r;
+            a.insert({l,{r,i}});
+        }
+        auto it = a.begin();
+        st.insert({it-> second.first,1});
+        ans[it -> second.second] = 1;
+        it++;
+        lli mx = 1;
+        while(it != a.end()){
+            auto it2 = st.begin();
+            if(it -> first > it2 -> first){
+                lli x = it -> second.first;
+                lli y = it2 -> second;;
+                st.erase(it2);
+                st.insert({x,y});
+                mx = max(mx,y);
+                ans[it -> second.second] = y;
+            }else {
+                lli x = it -> second.first;
+                lli y = st.size() + 1;
+                st.insert({x,y});
+                mx = max(mx,y);
+                ans[it -> second.second] = y;
+            }
+            it++;
+        }
+        cout << mx << endl;
+        for(auto i : ans){
+            cout << i << " ";
+        }
+        cout << endl;
     }
     return 0;
 }
