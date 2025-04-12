@@ -274,7 +274,22 @@ int main() {
     lli t; cin >> t;
     // lli t = 1;
     while(t--) {
-        
+        string s;cin >> s;
+        lli cnt = 0,mx = 0,n = s.size();
+        for(lli i = 0;i < n;i++){
+            if(s[i] == '1') {cnt++;mx = max(mx,cnt);}
+            else cnt = 0;
+            if(i == n-1 and s[i] == '1'){
+                lli j = 0,temp = 0;
+                while(j < n-cnt and s[j++] == '1')temp++;
+                cnt += temp;
+                mx = max(mx,cnt); 
+            }
+        }
+        mx = min(mx,n);
+        if(mx == n) {cout << n*n << endl;continue;}
+        else if(mx == 0) {cout << 0 << endl;continue;}
+        else cout << ((mx + 2) / 2 )*((mx+1)/2) << endl;
     }
     return 0;
 }
