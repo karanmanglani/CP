@@ -334,6 +334,81 @@ struct Trie {
     }
 };
 
+// 4. Binary Trie
+struct BinaryTrieNode {
+    vector<lli> children;
+    lli seh, sgd;
+    BinaryTrieNode() {
+        children.resize(2, -1);
+        seh = 0;
+        sgd = 0;
+    }
+};
+
+struct BinaryTrie {
+    vector<BinaryTrieNode> trie;
+    lli sz = 0;
+    BinaryTrie() {
+        trie.push_back(BinaryTrieNode());
+        sz++;
+    }
+
+    void insert(lli x) {
+        lli curr = 0;
+        for (lli i = 63; i >= 0; i--) {
+            lli bit = (x >> i) & 1;
+            if (trie[curr].children[bit] == -1) {
+                trie.push_back(BinaryTrieNode());
+                trie[curr].children[bit] = sz++;
+            }
+            curr = trie[curr].children[bit];
+            trie[curr].sgd++;
+        }
+        trie[curr].seh++;
+    }
+
+    bool search(lli x) {
+        lli curr = 0;
+        for (lli i = 63; i >= 0; i--) {
+            lli bit = (x >> i) & 1;
+            if (trie[curr].children[bit] == -1) return false;
+            curr = trie[curr].children[bit];
+        }
+        return trie[curr].seh > 0;
+    }
+
+    void erase(lli x) {
+        if (!search(x)) return;
+        lli curr = 0;
+        for (lli i = 63; i >= 0; i--) {
+            lli bit = (x >> i) & 1;
+            curr = trie[curr].children[bit];
+            trie[curr].sgd--;
+            if (trie[curr].sgd == 0) {
+                trie[curr].children[bit] = -1;
+                return;
+            }
+        }
+        trie[curr].seh--;
+    }
+
+    lli mxXor(lli num) {
+        lli curr = 0;
+        lli ans = 0;
+        for (lli i = 63; i >= 0; i--) {
+            lli bit = (num >> i) & 1;
+            lli opp = bit ^ 1;
+            if (trie[curr].children[opp] != -1) {
+                ans |= (1LL << i);
+                curr = trie[curr].children[opp];
+            } else {
+                curr = trie[curr].children[bit];
+            }
+        }
+        return ans;
+    }
+};
+
 // **********************************************************************************************
 // Author : Karan Manglani
 // College: NIT Raipur
@@ -357,6 +432,7 @@ struct Trie {
 // addStringToEnd: concatenates string hashes
 // TrieNode: Node of Trie
 // Trie: Class for Trie Data Structure
+// BinaryTrie: Class for Binary Trie Data Structure
 // **********************************************************************************************
 
 int main() {
