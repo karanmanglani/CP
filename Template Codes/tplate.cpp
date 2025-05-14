@@ -322,13 +322,13 @@ struct Trie {
     void deleteWord(const string &word) {
         if (!search(word)) return;
         lli curr = 0;
-        for (char ch : word) {
-            curr = trie[curr].children[ch - 'a'];
-            trie[curr].stringsGoingBelow--;
-            if (trie[curr].stringsGoingBelow == 0) {
+        for(char ch : word){
+            lli child = trie[curr].children[ch - 'a'];
+            trie[child].stringsGoingBelow--;
+            if (trie[child].stringsGoingBelow == 0) {
                 trie[curr].children[ch - 'a'] = -1;
-                return;
             }
+            curr = child;
         }
         trie[curr].stringsEndingHere--;
     }
@@ -382,12 +382,12 @@ struct BinaryTrie {
         lli curr = 0;
         for (lli i = 63; i >= 0; i--) {
             lli bit = (x >> i) & 1;
-            curr = trie[curr].children[bit];
-            trie[curr].sgd--;
-            if (trie[curr].sgd == 0) {
+            lli child = trie[curr].children[bit];
+            trie[child].sgd--;
+            if (trie[child].sgd == 0) {
                 trie[curr].children[bit] = -1;
-                return;
             }
+            curr = child;
         }
         trie[curr].seh--;
     }
@@ -438,8 +438,8 @@ struct BinaryTrie {
 int main() {
     cin.tie(0) -> sync_with_stdio(0);
     // your code goes here
-    lli t; cin >> t;
-    // lli t = 1;
+    // lli t; cin >> t;
+    lli t = 1;
     while(t--) {
         
     }
