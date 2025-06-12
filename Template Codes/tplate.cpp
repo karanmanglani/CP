@@ -148,6 +148,75 @@ lli nPr(lli n, lli r) { // TC -> O(r)
     return res;
 }
 
+// Kosaraju's Algorithm for Strongly Connected Components
+tuple<vector<vector<lli>>,vector<vector<lli>>,vector<lli>> kosaraju(vector<vector<lli>>& adj){
+    lli n = adj.size();
+    vector<lli> order;
+    vector<bool> vis(n,false);
+    auto dfs = [&](lli node, auto&& self) -> void{
+        vis[node] = true;
+        for(lli child : adj[node]) {
+            if(!vis[child]) {
+                self(child, self);
+            }
+        }
+        order.push_back(node);
+    };  
+
+    for(lli i = 0;i < n;i++){
+        if(!vis[i]) {
+            dfs(i, dfs);
+        }
+    }
+
+    reverse(order.begin(), order.end());
+    fill(vis.begin(), vis.end(), false);
+    vector<vector<lli>> adjR(n);
+    for(lli i = 0; i < n; i++) {
+        for(lli child : adj[i]) {
+            adjR[child].push_back(i);
+        }
+    }
+
+    vector<vector<lli>> scc;
+    auto dfsR = [&](lli node, auto&& self) -> void {
+        vis[node] = true;
+        scc.back().push_back(node);
+        for(lli child : adjR[node]) {
+            if(!vis[child]) {
+                self(child, self);
+            }
+        }
+    };
+
+    vector<lli> roots(n);
+
+    for(auto node : order){
+        if(vis[node]) continue;
+        scc.push_back({});
+        dfsR(node, dfsR);
+        for(lli v : scc.back()) {
+            roots[v] = scc.size() - 1; 
+        }
+    }
+
+    vector<vector<lli>> condensedGraph(n);
+    for(lli i = 0; i < n; i++) {
+        for(lli child : adj[i]) {
+            if(roots[i] != roots[child]) {
+                condensedGraph[roots[i]].push_back(roots[child]);
+            }
+        }
+    }
+
+    tuple<vector<vector<lli>>, vector<vector<lli>>, vector<lli>> result;
+    get<0>(result) = scc; // Strongly Connected Components
+    get<1>(result) = condensedGraph; // Condensed Graph
+    get<2>(result) = roots; // Roots of each node in the condensed graph
+    return result;
+
+}
+
 // **********************************************************************************************
 // Classes for Data Structures
 // 1. Disjoint Set
@@ -322,7 +391,7 @@ struct Trie {
     void deleteWord(const string &word) {
         if (!search(word)) return;
         lli curr = 0;
-        for(char ch : word){
+        for (char ch : word) {
             lli child = trie[curr].children[ch - 'a'];
             trie[child].stringsGoingBelow--;
             if (trie[child].stringsGoingBelow == 0) {
@@ -427,6 +496,7 @@ struct BinaryTrie {
 // nprf: nPr using factorial array
 // nCr: combinations using mod inverse method
 // nPr: permutations using mod inverse method
+// kosaraju: returns {scc, condensed graph, roots of each node in condensed graph}
 // DisjointSet: Class for Disjoint Set Data Structure
 // Hashing: Struct used for string hashing
 // addStringToEnd: concatenates string hashes
@@ -438,8 +508,8 @@ struct BinaryTrie {
 int main() {
     cin.tie(0) -> sync_with_stdio(0);
     // your code goes here
-    // lli t; cin >> t;
-    lli t = 1;
+    lli t; cin >> t;
+    // lli t = 1;
     while(t--) {
         
     }
