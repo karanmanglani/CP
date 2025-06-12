@@ -508,10 +508,46 @@ struct BinaryTrie {
 int main() {
     cin.tie(0) -> sync_with_stdio(0);
     // your code goes here
-    lli t; cin >> t;
-    // lli t = 1;
+    // lli t; cin >> t;
+    lli t = 1;
     while(t--) {
-        
+        lli n, m;cin >> n >> m;
+        vector<lli> k(n);for(auto &i : k) cin >> i;
+        vector<vector<lli>> adj(n);
+        for(lli i = 0; i < m; i++) {
+            lli u, v; cin >> u >> v;
+            u--; v--;
+            adj[u].push_back(v);
+        }
+
+        auto res = kosaraju(adj);
+        vector<vector<lli>> scc = get<0>(res);
+        vector<vector<lli>> condensedGraph = get<1>(res);
+        vector<lli> roots = get<2>(res);
+        vector<lli> val(n,0);
+        for(lli i = 0; i < n; i++) {
+            val[roots[i]] += k[i];
+        }
+        vector<lli> dp(n,0);
+        vector<bool> vis(n,false);
+        auto dfs = [&](lli node, auto&& self) -> void{
+            vis[node] = true;
+            for(lli child : condensedGraph[node]) {
+                if(!vis[roots[child]]) {
+                    self(roots[child], self);
+                }
+                dp[node] = max(dp[node], dp[roots[child]]);
+            }
+            dp[node] += val[node];
+        };
+
+        for(lli i = 0; i < n; i++) {
+            if(!vis[roots[i]]) {
+                dfs(roots[i], dfs);
+            }
+        }
+        lli  ans = *max_element(dp.begin(), dp.end());
+        cout << ans << endl;
     }
     return 0;
 }
