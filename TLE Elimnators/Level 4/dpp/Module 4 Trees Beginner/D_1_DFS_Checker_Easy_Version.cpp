@@ -583,7 +583,7 @@ int main(){
         dfs(dfs,0,-1);
         auto isAnc = [&](int u,int v)->bool{
             if(u==-1) return false;
-            return tin[u]<=tin[v] && tout[v]<=tout[u];
+            return tin[u] <= tin[v] && tout[v] <= tout[u];
         };
         vector<int> p(n);
         for(int i=0;i<n;i++){ cin >> p[i]; p[i]--; }
@@ -607,7 +607,7 @@ int main(){
             swap(p[x],p[y]);
             for(auto id:idxs) if(!checkPair(id)) bad++;
             if(p[0]!=0) bad++;
-            cout << (bad==0 ? "YES" : "NO") << '\n';
+            cout << (bad==0 ? "YES" : "NO") << endl;
         }
     }
 }
