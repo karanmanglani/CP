@@ -161,7 +161,7 @@ tuple<vector<vector<lli>>,vector<vector<lli>>,vector<lli>> kosaraju(vector<vecto
             }
         }
         order.push_back(node);
-    };  
+    };
 
     for(lli i = 0;i < n;i++){
         if(!vis[i]) {
@@ -196,7 +196,7 @@ tuple<vector<vector<lli>>,vector<vector<lli>>,vector<lli>> kosaraju(vector<vecto
         scc.push_back({});
         dfsR(node, dfsR);
         for(lli v : scc.back()) {
-            roots[v] = node; 
+            roots[v] = node;
         }
     }
 
@@ -221,10 +221,10 @@ tuple<vector<vector<lli>>,vector<vector<lli>>,vector<lli>> kosaraju(vector<vecto
 // Classes for Data Structures
 // 1. Disjoint Set
 class DisjointSet {
+    public:
     vector<lli> parent;
     vector<lli> rank;
     vector<lli> size;
-public:
     DisjointSet(lli n) {
         rank.resize(n + 1, 0);
         parent.resize(n + 1);
@@ -478,6 +478,59 @@ struct BinaryTrie {
     }
 };
 
+// 5. Segment Tree
+class segmentTree{
+    public:
+    vector<lli> tree;
+    vector<lli> arr;
+    lli n;
+    segmentTree(vector<lli> &arr){
+        n = arr.size();
+        this -> arr = arr;
+        tree.resize(4 * n, 0);
+    }
+
+    void build(lli node, lli start , lli end){
+        if(start == end){
+            tree[node] = arr[start];
+            return;
+        }
+
+        lli mid = (start + end)/2;
+        build(2*node,start, mid);
+        build(2*node+1,mid+1,end);
+        tree[node] = tree[2*node] + tree[2*node+1];
+    }
+
+    void update(lli node, lli start, lli end, lli idx, lli val){
+        if(start == end){
+            arr[idx] = val;
+            tree[node] = val;
+            return ;
+        }
+        lli mid = (start + end) / 2;
+        if(idx <= mid){
+            update(2 * node, start , mid, idx,val);
+        }
+        else{
+            update(2 * node + 1, mid + 1, end, idx, val);
+        }
+        tree[node] = tree[2 * node] + tree[2 * node + 1];
+    }
+
+    lli query(lli node, lli start , lli end, lli l , lli r){
+        if(l > end || r < start){
+            return 0; // No Overlap
+        }
+        if(l <= start && end <= r){
+            return tree[node]; // Total Overlap
+        }
+        lli mid = (start + end) / 2;
+        return query(2*node, start, mid,l,r) + query(2*node + 1, mid + 1, end, l , r); // Partial Overlap
+    }
+
+};
+
 // **********************************************************************************************
 // Author : Karan Manglani
 // College: NIT Raipur
@@ -503,6 +556,7 @@ struct BinaryTrie {
 // TrieNode: Node of Trie
 // Trie: Class for Trie Data Structure
 // BinaryTrie: Class for Binary Trie Data Structure
+// Segment Tree: Class for Segment Tree
 // **********************************************************************************************
 
 int main() {
@@ -511,7 +565,7 @@ int main() {
     lli t; cin >> t;
     // lli t = 1;
     while(t--) {
-        
+       
     }
     return 0;
 }
