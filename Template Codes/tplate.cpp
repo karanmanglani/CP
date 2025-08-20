@@ -565,7 +565,7 @@ int main() {
     lli t; cin >> t;
     // lli t = 1;
     while(t--) {
-       
+        
     }
     return 0;
 }
