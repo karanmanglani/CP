@@ -531,6 +531,45 @@ class segmentTree{
 
 };
 
+// 6. Matrix for Matrix Exponentiation
+class Matrix{
+    public:
+    vector<vector<lli>> mat;
+    lli n,m;
+
+    Matrix(lli n, lli m) : n(n), m(m) {
+        mat.resize(n, vector<lli>(m, 0));
+    }
+
+    Matrix operator*(const Matrix &other) const {
+        Matrix result(n, other.m);
+        for (lli i = 0; i < n; i++) {
+            for (lli j = 0; j < other.m; j++) {
+                for (lli k = 0; k < m; k++) {
+                    result.mat[i][j] = (result.mat[i][j] + mat[i][k] * other.mat[k][j]) % MOD;
+                }
+            }
+        }
+        return result;
+    }
+};
+
+// Matrix Exponentiation Function
+Matrix matrixExponentiation(Matrix base, lli exp) {
+    Matrix result(base.n, base.n);
+    for (lli i = 0; i < base.n; i++) {
+        result.mat[i][i] = 1;
+    }
+    while (exp) {
+        if (exp & 1) {
+            result = result * base;
+        }
+        base = base * base;
+        exp >>= 1;
+    }
+    return result;
+}
+
 // **********************************************************************************************
 // Author : Karan Manglani
 // College: NIT Raipur
@@ -557,6 +596,7 @@ class segmentTree{
 // Trie: Class for Trie Data Structure
 // BinaryTrie: Class for Binary Trie Data Structure
 // Segment Tree: Class for Segment Tree
+// Matrix: Class for Matrix Data Structure
 // **********************************************************************************************
 
 int main() {
