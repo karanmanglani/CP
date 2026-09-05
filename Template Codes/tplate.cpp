@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
 
 typedef long long int lli;
 //typedef __int128 badaint;
@@ -11,7 +11,7 @@ typedef long double ld;
 
 // Ordered Set
 template <typename T>
-using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+// using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 lli be(lli n, lli p) { // TC -> O(log(p))
     lli x = n;
@@ -611,7 +611,7 @@ int main() {
     lli t; cin >> t;
     // lli t = 1;
     while(t--) {
-        
+
     }
     return 0;
 }
